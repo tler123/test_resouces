@@ -150,12 +150,6 @@
             margin-top: 5px;
         }
         
-        .file-meta {
-            font-size: 0.85rem;
-            color: #888;
-            margin-top: 3px;
-        }
-        
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -229,14 +223,18 @@
         
         .file-preview {
             flex: 1;
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
             font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
+            white-space: pre;
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.4;
             max-height: 500px;
             transition: max-height 0.3s ease;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 4px;
+            margin: 0;
         }
         
         .file-preview.collapsed {
@@ -252,13 +250,13 @@
             left: 0;
             right: 0;
             height: 60px;
-            background: linear-gradient(to bottom, transparent, #f8f9fa 80%);
+            background: linear-gradient(to bottom, transparent, #2c3e50 80%);
             pointer-events: none;
         }
         
         .sample-info {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px;
+            padding: 12px;
             background-color: #eef7ff;
             border-radius: 6px;
             border-left: 4px solid #2c5aa0;
@@ -286,49 +284,9 @@
         
         .error {
             color: #e74c3c;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             font-size: 1rem;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 0.9rem;
-            border-top: 1px solid #eee;
-            background-color: #f8f9fa;
-        }
-        
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #27ae60;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            display: none;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .notification.show {
-            display: flex;
-            animation: fadeInOut 2.5s ease;
-        }
-        
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(20px); }
-            15% { opacity: 1; transform: translateY(0); }
-            85% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(20px); }
-        }
-        
-        .notification i {
-            margin-right: 10px;
-            font-size: 1.2rem;
         }
         
         .directory {
@@ -385,12 +343,6 @@
     <div class="container">
         <header>
             <h1><i class="fas fa-folder-open"></i> 2025年度 算法入門C++ 第一次測驗</h1>
-            <p class="subtitle">使用固定URL連結讀取檔案 | 超過30行或5000字元自動折疊</p>
-            <div style="font-size: 0.9rem; margin-top: 10px; color: #ffcc00; background-color: rgba(255, 204, 0, 0.1); padding: 8px; border-radius: 4px;">
-                <i class="fas fa-info-circle"></i> 
-                <strong>檔案來源：</strong> 
-                https://tler123.github.io/test_resouces/[檔案名稱]
-            </div>
         </header>
         
         <div class="main-content">
@@ -405,7 +357,6 @@
                     <div>
                         <h2 class="file-title" id="file-title">選擇檔案</h2>
                         <div class="file-path" id="file-path"></div>
-                        <div class="file-meta" id="file-meta"></div>
                     </div>
                     <div class="action-buttons" id="action-buttons" style="display: none;">
                         <button class="toggle-btn" id="toggle-btn">
@@ -419,56 +370,41 @@
                 
                 <div class="file-preview-container" id="file-preview-container" style="display: none;">
                     <div class="preview-header">
-                        <div>檔案內容預覽</div>
+                        <div>檔案內容</div>
                         <div class="preview-stats" id="preview-stats"></div>
                     </div>
-                    <div class="file-preview" id="file-preview">
-                        <!-- 檔案內容將在這裡顯示 -->
-                    </div>
+                    <div class="file-preview" id="file-preview"></div>
                 </div>
                 
                 <div class="sample-info" id="sample-info" style="display: none;">
-                    <strong>提示：</strong> 此檔案為樣例測試資料，您可以複製內容到您的程式進行測試。
+                    此檔案為樣例測試資料，您可以複製內容到您的程式進行測試。
                 </div>
                 
                 <div class="loading" id="loading" style="display: none;">
-                    <i class="fas fa-spinner"></i> 正在載入檔案...
+                    <i class="fas fa-spinner"></i> 正在載入檔案
                 </div>
                 
-                <div class="error" id="error" style="display: none;">
-                    <!-- 錯誤訊息將在這裡顯示 -->
-                </div>
+                <div class="error" id="error" style="display: none;"></div>
                 
                 <div id="no-file-selected" style="text-align: center; padding: 50px; color: #666;">
                     <i class="fas fa-file-alt" style="font-size: 3rem; margin-bottom: 20px; color: #ddd;"></i>
                     <h3 style="color: #999;">請從左側選擇一個檔案</h3>
-                    <p style="margin-top: 10px;">點擊資料夾展開檔案列表，選擇要查看的測試資料檔案</p>
                 </div>
             </div>
         </div>
-        
-        <div class="footer">
-            <p>2025年度 算法入門C++ 第一次測驗 &copy; 檔案來源: https://tler123.github.io/test_resouces/</p>
-        </div>
     </div>
     
-    <div class="notification" id="notification">
+    <div class="notification" id="notification" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: #27ae60; color: white; padding: 15px 25px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); align-items: center; z-index: 1000;">
         <i class="fas fa-check-circle"></i>
         <span id="notification-text">已複製到剪貼簿</span>
     </div>
 
     <script>
-        // ============================================
-        // 固定URL配置
-        // ============================================
-        
         const BASE_URL = 'https://tler123.github.io/test_resouces/';
         
-        // 檔案配置
         const FILE_CONFIG = {
             pdf: '2025年度_算法入門C++_第一次測驗.pdf',
             
-            // 旅行計劃 (trip)
             trip: [
                 'trip1.in', 'trip1.ans',
                 'trip2.in', 'trip2.ans', 
@@ -476,7 +412,6 @@
                 'trip4.in', 'trip4.ans'
             ],
             
-            // 高樓 (buildings)
             buildings: [
                 'buildings1.in', 'buildings1.ans',
                 'buildings2.in', 'buildings2.ans',
@@ -486,14 +421,12 @@
                 'buildings6.in', 'buildings6.ans'
             ],
             
-            // 回文字串 (string)
             string: [
                 'string1.in', 'string1.ans',
                 'string2.in', 'string2.ans',
                 'string3.in', 'string3.ans'
             ],
             
-            // 淘汰賽 (knockout)
             knockout: [
                 'knockout1.in', 'knockout1.ans',
                 'knockout2.in', 'knockout2.ans',
@@ -502,11 +435,9 @@
             ]
         };
 
-        // DOM元素
         const fileTree = document.querySelector('.file-tree');
         const fileTitle = document.getElementById('file-title');
         const filePath = document.getElementById('file-path');
-        const fileMeta = document.getElementById('file-meta');
         const actionButtons = document.getElementById('action-buttons');
         const toggleBtn = document.getElementById('toggle-btn');
         const copyAllBtn = document.getElementById('copy-all-btn');
@@ -520,50 +451,36 @@
         const notification = document.getElementById('notification');
         const notificationText = document.getElementById('notification-text');
 
-        // 狀態變數
         let currentFile = null;
         let isCollapsed = false;
         let fileContent = '';
 
-        // 構建檔案URL
         function buildFileUrl(filename) {
             return BASE_URL + encodeURIComponent(filename);
         }
 
-        // 初始化檔案樹
         function initFileTree() {
             fileTree.innerHTML = '';
             
-            // 添加PDF檔案作為超連結
-            addPdfLinkItem(FILE_CONFIG.pdf);
-            
-            // 添加資料夾
-            addFolderItem('trip/', '旅行計劃', FILE_CONFIG.trip);
-            addFolderItem('buildings/', '高樓', FILE_CONFIG.buildings);
-            addFolderItem('string/', '回文字串', FILE_CONFIG.string);
-            addFolderItem('knockout/', '淘汰賽', FILE_CONFIG.knockout);
-        }
-
-        // 添加PDF超連結項目
-        function addPdfLinkItem(pdfName) {
-            const li = document.createElement('li');
-            li.className = 'pdf-link-item';
-            
-            const pdfUrl = buildFileUrl(pdfName);
-            
-            li.innerHTML = `
+            const pdfLi = document.createElement('li');
+            pdfLi.className = 'pdf-link-item';
+            const pdfUrl = buildFileUrl(FILE_CONFIG.pdf);
+            pdfLi.innerHTML = `
                 <a href="${pdfUrl}" class="pdf-link" target="_blank" onclick="event.stopPropagation();">
                     <div class="file-icon">
                         <i class="fas fa-file-pdf pdf-file"></i>
                     </div>
-                    <div class="file-name pdf-file">${pdfName} <span style="font-size: 0.8em; color: #666;">(新視窗開啟)</span></div>
+                    <div class="file-name pdf-file">${FILE_CONFIG.pdf}</div>
                 </a>
             `;
+            fileTree.appendChild(pdfLi);
             
-            fileTree.appendChild(li);
+            addFolderItem('trip', '旅行計劃', FILE_CONFIG.trip);
+            addFolderItem('buildings', '高樓', FILE_CONFIG.buildings);
+            addFolderItem('string', '回文字串', FILE_CONFIG.string);
+            addFolderItem('knockout', '淘汰賽', FILE_CONFIG.knockout);
         }
 
-        // 添加檔案項目
         function addFileItem(name, type, path) {
             const li = document.createElement('li');
             li.className = 'file-item';
@@ -594,7 +511,6 @@
             fileTree.appendChild(li);
         }
 
-        // 添加資料夾項目
         function addFolderItem(folderName, displayName, files) {
             const li = document.createElement('li');
             li.className = 'file-item directory';
@@ -602,7 +518,7 @@
                 <div class="file-icon">
                     <i class="fas fa-folder"></i>
                 </div>
-                <div class="file-name">${folderName} <span style="color: #666; font-size: 0.9em;">(${displayName})</span></div>
+                <div class="file-name">${folderName}</div>
             `;
             
             li.addEventListener('click', (e) => {
@@ -613,7 +529,6 @@
             fileTree.appendChild(li);
         }
 
-        // 切換資料夾展開/收合
         function toggleFolder(folderElement, folderName, files) {
             const isExpanded = folderElement.classList.contains('expanded');
             
@@ -673,43 +588,28 @@
             }
         }
 
-        // 選擇檔案
         async function selectFile(path, type, displayName) {
-            // 移除所有active狀態
             document.querySelectorAll('.file-item').forEach(item => {
                 item.classList.remove('active');
             });
             
-            // 設置當前選中的檔案為active
             const fileItem = document.querySelector(`[data-path="${path}"]`);
             if (fileItem) {
                 fileItem.classList.add('active');
             }
             
-            // 重置預覽區域
             resetPreview();
-            
-            // 顯示載入中
             showLoading();
             
-            // 更新標題
             fileTitle.textContent = displayName || path;
-            filePath.textContent = `檔案路徑: ${path}`;
-            fileMeta.textContent = `檔案類型: ${type === 'input' ? '輸入檔案 (.in)' : '輸出檔案 (.ans)'}`;
+            filePath.textContent = `檔案: ${path}`;
             
-            // 載入檔案內容
             await loadFileContent(path, type, displayName || path);
         }
 
-        // 載入檔案內容
         async function loadFileContent(filePath, type, displayName) {
             try {
-                // 構建完整URL
                 const fileUrl = buildFileUrl(filePath);
-                
-                console.log(`正在載入檔案: ${fileUrl}`);
-                
-                // 使用Fetch API讀取檔案，添加no-cache防止快取
                 const response = await fetch(fileUrl, {
                     cache: 'no-cache',
                     headers: {
@@ -719,36 +619,27 @@
                 
                 if (!response.ok) {
                     if (response.status === 404) {
-                        throw new Error(`檔案不存在 (404)`);
+                        throw new Error('檔案不存在');
                     } else {
-                        throw new Error(`無法讀取檔案 (HTTP ${response.status})`);
+                        throw new Error(`無法讀取檔案`);
                     }
                 }
                 
-                // 讀取檔案內容
                 fileContent = await response.text();
-                
-                // 獲取檔案大小
                 const fileSize = response.headers.get('content-length') || fileContent.length;
                 
-                // 顯示檔案內容
                 displayFileContent(fileContent, fileSize, type, displayName);
-                
-                // 顯示操作按鈕
                 actionButtons.style.display = 'flex';
-                
-                // 如果是測試資料，顯示提示
                 sampleInfo.style.display = 'block';
                 
             } catch (err) {
-                showError(`無法載入檔案 "${displayName}"`, err, filePath);
+                showError(`無法載入檔案 ${displayName}`, err, filePath);
                 console.error('檔案載入錯誤:', err);
             } finally {
                 hideLoading();
             }
         }
 
-        // 顯示載入中
         function showLoading() {
             loading.style.display = 'flex';
             error.style.display = 'none';
@@ -758,38 +649,28 @@
             noFileSelected.style.display = 'none';
         }
 
-        // 隱藏載入中
         function hideLoading() {
             loading.style.display = 'none';
         }
 
-        // 顯示檔案內容
         function displayFileContent(content, fileSize, type, filename) {
-            // 計算檔案資訊
             const lines = content.split('\n').length;
             const chars = content.length;
             const sizeKB = Math.round(fileSize / 1024 * 100) / 100;
             
-            // 顯示預覽容器
             filePreviewContainer.style.display = 'flex';
+            previewStats.textContent = `${lines}行 ${chars}字元 ${sizeKB}KB`;
             
-            // 更新統計資訊
-            previewStats.textContent = `${lines} 行 | ${chars.toLocaleString()} 字元 | ${sizeKB} KB`;
-            
-            // 顯示檔案內容
             filePreview.textContent = content;
             
-            // 重置折疊狀態
             isCollapsed = false;
             updateToggleButton(content, lines, chars);
             
-            // 如果檔案超過30行或5000字元，自動折疊
             if (lines > 30 || chars > 5000) {
                 togglePreview();
             }
         }
 
-        // 切換預覽折疊/展開
         function togglePreview() {
             isCollapsed = !isCollapsed;
             
@@ -802,9 +683,7 @@
             }
         }
 
-        // 更新切換按鈕
         function updateToggleButton(content, lines, chars) {
-            // 如果檔案超過30行或5000字元，顯示切換按鈕
             if (lines > 30 || chars > 5000) {
                 toggleBtn.style.display = 'flex';
                 toggleBtn.innerHTML = isCollapsed ? 
@@ -815,30 +694,17 @@
             }
         }
 
-        // 顯示錯誤訊息
         function showError(message, err, filename) {
             const fileUrl = buildFileUrl(filename);
             
             error.style.display = 'block';
             error.innerHTML = `
-                <div style="margin-bottom: 15px;">
+                <div style="margin-bottom: 10px;">
                     <i class="fas fa-exclamation-triangle"></i> ${message}
                 </div>
-                <div style="font-size: 0.9rem; color: #666; text-align: left;">
-                    <strong>詳細資訊：</strong>
-                    <ul style="margin-top: 8px; padding-left: 20px;">
-                        <li>錯誤: ${err.message}</li>
-                        <li>嘗試的URL: <a href="${fileUrl}" target="_blank">${fileUrl}</a></li>
-                        <li>請確認檔案已上傳到: https://tler123.github.io/test_resouces/</li>
-                    </ul>
-                    <div style="margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px;">
-                        <strong>測試檔案是否存在：</strong>
-                        <div style="margin-top: 5px;">
-                            <button onclick="testFileExistence()" style="background-color: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">
-                                <i class="fas fa-check"></i> 檢查所有檔案
-                            </button>
-                        </div>
-                    </div>
+                <div style="font-size: 0.9rem; color: #666;">
+                    檔案: ${filename}<br>
+                    URL: <a href="${fileUrl}" target="_blank">${fileUrl}</a>
                 </div>
             `;
             
@@ -847,76 +713,6 @@
             sampleInfo.style.display = 'none';
         }
 
-        // 測試檔案是否存在
-        async function testFileExistence() {
-            const testResults = document.createElement('div');
-            testResults.id = 'test-results';
-            testResults.style.marginTop = '15px';
-            testResults.style.padding = '10px';
-            testResults.style.backgroundColor = '#f8f9fa';
-            testResults.style.borderRadius = '4px';
-            testResults.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在檢查檔案...';
-            
-            error.appendChild(testResults);
-            
-            // 測試所有檔案
-            const allFiles = [
-                FILE_CONFIG.pdf,
-                ...FILE_CONFIG.trip,
-                ...FILE_CONFIG.buildings,
-                ...FILE_CONFIG.string,
-                ...FILE_CONFIG.knockout
-            ];
-            
-            let results = [];
-            
-            for (const file of allFiles) {
-                try {
-                    const response = await fetch(buildFileUrl(file), { method: 'HEAD' });
-                    results.push({
-                        file: file,
-                        exists: response.ok,
-                        status: response.status
-                    });
-                } catch (err) {
-                    results.push({
-                        file: file,
-                        exists: false,
-                        error: err.message
-                    });
-                }
-            }
-            
-            // 顯示結果
-            const existingFiles = results.filter(r => r.exists);
-            const missingFiles = results.filter(r => !r.exists);
-            
-            testResults.innerHTML = `
-                <div style="margin-bottom: 10px;">
-                    <strong>檢查結果：</strong>
-                    <span style="color: #27ae60;">${existingFiles.length} 個檔案存在</span>,
-                    <span style="color: #e74c3c;">${missingFiles.length} 個檔案缺失</span>
-                </div>
-                ${missingFiles.length > 0 ? `
-                <div style="margin-top: 10px;">
-                    <strong>缺失的檔案：</strong>
-                    <ul style="margin-top: 5px; padding-left: 20px; font-size: 0.9em;">
-                        ${missingFiles.map(f => `<li>${f.file} - ${f.error || 'HTTP ' + f.status}</li>`).join('')}
-                    </ul>
-                </div>
-                ` : ''}
-                ${existingFiles.length > 0 ? `
-                <div style="margin-top: 10px;">
-                    <strong>存在的檔案：</strong>
-                    <div style="font-size: 0.85em; margin-top: 5px; color: #666;">
-                        ${existingFiles.map(f => f.file).join(', ')}
-                    </div>
-                </div>
-                ` : ''}
-            `;
-        }
-
-        // 重置預覽區域
         function resetPreview() {
             filePreview.textContent = '';
             previewStats.textContent = '';
@@ -925,20 +721,18 @@
             noFileSelected.style.display = 'none';
         }
 
-        // 複製全部內容
         copyAllBtn.addEventListener('click', async () => {
             if (fileContent) {
                 try {
                     await navigator.clipboard.writeText(fileContent);
                     
-                    notificationText.textContent = '已複製全部內容到剪貼簿';
-                    notification.classList.add('show');
+                    notificationText.textContent = '已複製到剪貼簿';
+                    notification.style.display = 'flex';
                     
                     setTimeout(() => {
-                        notification.classList.remove('show');
+                        notification.style.display = 'none';
                     }, 2500);
                 } catch (err) {
-                    // 如果clipboard API失敗，使用傳統方法
                     const textarea = document.createElement('textarea');
                     textarea.value = fileContent;
                     document.body.appendChild(textarea);
@@ -947,40 +741,20 @@
                     document.body.removeChild(textarea);
                     
                     notificationText.textContent = '已複製到剪貼簿';
-                    notification.classList.add('show');
+                    notification.style.display = 'flex';
                     
                     setTimeout(() => {
-                        notification.classList.remove('show');
+                        notification.style.display = 'none';
                     }, 2500);
                 }
             }
         });
 
-        // 切換按鈕事件
         toggleBtn.addEventListener('click', togglePreview);
 
-        // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             initFileTree();
-            
-            console.log('=== OI賽制看題系統 ===');
-            console.log(`使用固定URL: ${BASE_URL}`);
-            console.log('功能說明:');
-            console.log('1. PDF檔案會在新視窗開啟');
-            console.log('2. 超過30行或5000字元的檔案會自動折疊');
-            console.log('3. 可以複製整個檔案內容');
-            console.log('4. 所有檔案從固定URL讀取');
-            
-            // 顯示當前配置
-            const configInfo = document.createElement('div');
-            configInfo.style.cssText = 'font-size: 0.8rem; color: #666; margin-top: 5px;';
-            configInfo.innerHTML = `<i class="fas fa-server"></i> 檔案來源: ${BASE_URL}`;
-            document.querySelector('.subtitle').parentNode.appendChild(configInfo);
         });
-        
-        // 全域函數供測試使用
-        window.testFileExistence = testFileExistence;
-        window.buildFileUrl = buildFileUrl;
     </script>
 </body>
 </html>
