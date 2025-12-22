@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025年度 算法入門C++ 第一次測驗</title>
+    <title>2025年度 算法入門C++ 第一次測驗 - GitHub Pages版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -21,7 +21,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background-color: #fff;
             border-radius: 12px;
@@ -55,11 +55,11 @@
         
         .main-content {
             display: flex;
-            min-height: 600px;
+            min-height: 700px;
         }
         
         .file-explorer {
-            flex: 0 0 280px;
+            flex: 0 0 300px;
             background-color: #f8f9fa;
             border-right: 1px solid #eaeaea;
             padding: 20px 0;
@@ -99,10 +99,33 @@
             font-size: 1rem;
         }
         
+        .pdf-link-item {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+        
+        .pdf-link-item:hover {
+            background-color: #eef2ff;
+        }
+        
+        .pdf-link {
+            color: #e74c3c;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .pdf-link:hover {
+            text-decoration: underline;
+        }
+        
         .file-content {
             flex: 1;
             padding: 30px;
-            min-height: 600px;
+            min-height: 700px;
             display: flex;
             flex-direction: column;
         }
@@ -127,6 +150,17 @@
             margin-top: 5px;
         }
         
+        .file-meta {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 3px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
         .copy-all-btn {
             background-color: #2c5aa0;
             color: white;
@@ -148,17 +182,78 @@
             margin-right: 8px;
         }
         
-        .file-preview {
+        .toggle-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .toggle-btn:hover {
+            background-color: #219653;
+        }
+        
+        .toggle-btn i {
+            margin-right: 8px;
+        }
+        
+        .file-preview-container {
             flex: 1;
+            display: flex;
+            flex-direction: column;
             background-color: #f8f9fa;
             border-radius: 8px;
-            padding: 20px;
             border: 1px solid #eaeaea;
+            overflow: hidden;
+        }
+        
+        .preview-header {
+            padding: 15px 20px;
+            background-color: #eef2ff;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .preview-stats {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .file-preview {
+            flex: 1;
+            padding: 20px;
             overflow-y: auto;
             font-family: 'Courier New', monospace;
             white-space: pre-wrap;
             font-size: 0.95rem;
             line-height: 1.5;
+            max-height: 500px;
+            transition: max-height 0.3s ease;
+        }
+        
+        .file-preview.collapsed {
+            max-height: 200px;
+            overflow-y: hidden;
+            position: relative;
+        }
+        
+        .file-preview.collapsed::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, #f8f9fa 80%);
+            pointer-events: none;
         }
         
         .pdf-viewer-container {
@@ -184,6 +279,32 @@
             border-radius: 6px;
             border-left: 4px solid #2c5aa0;
             font-size: 0.9rem;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .loading i {
+            margin-right: 10px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            color: #e74c3c;
+            padding: 20px;
+            text-align: center;
+            font-size: 1rem;
         }
         
         .footer {
@@ -263,6 +384,16 @@
             .file-content {
                 padding: 20px;
             }
+            
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .copy-all-btn, .toggle-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -270,7 +401,12 @@
     <div class="container">
         <header>
             <h1><i class="fas fa-folder-open"></i> 2025年度 算法入門C++ 第一次測驗</h1>
-            <p class="subtitle">瀏覽題目資料夾和樣例檔案 | 點擊左側檔案查看內容</p>
+            <p class="subtitle">GitHub Pages專用版 | 直接讀取儲存庫檔案</p>
+            <div style="font-size: 0.9rem; margin-top: 10px; color: #ffcc00; background-color: rgba(255, 204, 0, 0.1); padding: 8px; border-radius: 4px;">
+                <i class="fas fa-info-circle"></i> 
+                <strong>使用方法：</strong> 
+                點擊PDF在新視窗開啟 | 超過30行或5000字元自動折疊 | 支援大檔案複製
+            </div>
         </header>
         
         <div class="main-content">
@@ -285,28 +421,50 @@
                     <div>
                         <h2 class="file-title" id="file-title">選擇檔案</h2>
                         <div class="file-path" id="file-path"></div>
+                        <div class="file-meta" id="file-meta"></div>
                     </div>
-                    <button class="copy-all-btn" id="copy-all-btn" style="display: none;">
-                        <i class="fas fa-copy"></i> 複製全部內容
-                    </button>
+                    <div class="action-buttons" id="action-buttons" style="display: none;">
+                        <button class="toggle-btn" id="toggle-btn">
+                            <i class="fas fa-compress"></i> 顯示更少
+                        </button>
+                        <button class="copy-all-btn" id="copy-all-btn">
+                            <i class="fas fa-copy"></i> 複製全部
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="file-preview" id="file-preview">
-                    請從左側選擇一個檔案以查看內容
-                </div>
-                
-                <div class="pdf-viewer-container" id="pdf-viewer-container" style="display: none;">
-                    <iframe class="pdf-viewer" id="pdf-viewer" src=""></iframe>
+                <div class="file-preview-container" id="file-preview-container" style="display: none;">
+                    <div class="preview-header">
+                        <div>檔案內容預覽</div>
+                        <div class="preview-stats" id="preview-stats"></div>
+                    </div>
+                    <div class="file-preview" id="file-preview">
+                        <!-- 檔案內容將在這裡顯示 -->
+                    </div>
                 </div>
                 
                 <div class="sample-info" id="sample-info" style="display: none;">
                     <strong>提示：</strong> 此檔案為樣例測試資料，您可以複製內容到您的程式進行測試。
                 </div>
+                
+                <div class="loading" id="loading" style="display: none;">
+                    <i class="fas fa-spinner"></i> 正在從GitHub載入檔案...
+                </div>
+                
+                <div class="error" id="error" style="display: none;">
+                    <!-- 錯誤訊息將在這裡顯示 -->
+                </div>
+                
+                <div id="no-file-selected" style="text-align: center; padding: 50px; color: #666;">
+                    <i class="fas fa-file-alt" style="font-size: 3rem; margin-bottom: 20px; color: #ddd;"></i>
+                    <h3 style="color: #999;">請從左側選擇一個檔案</h3>
+                    <p style="margin-top: 10px;">點擊資料夾展開檔案列表，選擇要查看的測試資料檔案</p>
+                </div>
             </div>
         </div>
         
         <div class="footer">
-            <p>2025年度 算法入門C++ 第一次測驗 &copy; 時間：2025年11月21日 17:00 ~ 19:30</p>
+            <p>2025年度 算法入門C++ 第一次測驗 &copy; GitHub Pages版本 | 時間：2025年11月21日 17:00 ~ 19:30</p>
         </div>
     </div>
     
@@ -316,240 +474,166 @@
     </div>
 
     <script>
-        // 重要：請檢查PDF檔案的確切名稱
-        // 常見問題：檔案名可能是以下之一：
-        // 1. 2025年度_算法入門C++_第一次測驗.pdf
-        // 2. 2025年度_算法入門C++_第一次測驗.PDF
-        // 3. 2025年度_算法入门C++_第一次测验.pdf
-        const PDF_FILENAME = '2025年度_算法入門C++_第一次測驗.pdf';
+        // ============================================
+        // 自動檢測GitHub資訊
+        // ============================================
         
-        // 檔案系統結構
-        const fileSystem = {
-            [PDF_FILENAME]: {
-                type: "pdf",
-                path: "/" + PDF_FILENAME,
-                content: "PDF檔案 - 包含所有題目描述、輸入輸出格式、數據範圍和子任務詳情"
-            },
-            "trip/": {
-                type: "folder",
-                children: {
-                    "trip1.in": {
-                        type: "input",
-                        path: "/trip/trip1.in",
-                        content: "5\n2 4 3 1 2"
-                    },
-                    "trip1.ans": {
-                        type: "output",
-                        path: "/trip/trip1.ans",
-                        content: "NO"
-                    },
-                    "trip2.in": {
-                        type: "input",
-                        path: "/trip/trip2.in",
-                        content: "5\n2 5 6 7 1"
-                    },
-                    "trip2.ans": {
-                        type: "output",
-                        path: "/trip/trip2.ans",
-                        content: "YES"
-                    },
-                    "trip3.in": {
-                        type: "input",
-                        path: "/trip/trip3.in",
-                        content: "3\n1 2 3"
-                    },
-                    "trip3.ans": {
-                        type: "output",
-                        path: "/trip/trip3.ans",
-                        content: "NO"
-                    },
-                    "trip4.in": {
-                        type: "input",
-                        path: "/trip/trip4.in",
-                        content: "4\n5 5 5 5"
-                    },
-                    "trip4.ans": {
-                        type: "output",
-                        path: "/trip/trip4.ans",
-                        content: "YES"
+        // 自動獲取GitHub使用者名稱和儲存庫名稱
+        function detectGitHubInfo() {
+            const url = window.location.href;
+            
+            // 檢查是否在GitHub Pages上
+            if (url.includes('github.io')) {
+                try {
+                    const urlObj = new URL(url);
+                    const pathParts = urlObj.pathname.split('/').filter(p => p);
+                    
+                    if (pathParts.length >= 2) {
+                        // 格式: github.io/使用者名稱/儲存庫名稱
+                        return {
+                            username: pathParts[0],
+                            repo: pathParts[1],
+                            branch: 'main'
+                        };
                     }
-                }
-            },
-            "buildings/": {
-                type: "folder",
-                children: {
-                    "buildings1.in": {
-                        type: "input",
-                        path: "/buildings/buildings1.in",
-                        content: "5\n7 4 8 8 3"
-                    },
-                    "buildings1.ans": {
-                        type: "output",
-                        path: "/buildings/buildings1.ans",
-                        content: "1"
-                    },
-                    "buildings2.in": {
-                        type: "input",
-                        path: "/buildings/buildings2.in",
-                        content: "3\n5 5 5"
-                    },
-                    "buildings2.ans": {
-                        type: "output",
-                        path: "/buildings/buildings2.ans",
-                        content: "0"
-                    },
-                    "buildings3.in": {
-                        type: "input",
-                        path: "/buildings/buildings3.in",
-                        content: "4\n1 2 3 4"
-                    },
-                    "buildings3.ans": {
-                        type: "output",
-                        path: "/buildings/buildings3.ans",
-                        content: "1"
-                    },
-                    "buildings4.in": {
-                        type: "input",
-                        path: "/buildings/buildings4.in",
-                        content: "6\n100 200 150 300 250 300"
-                    },
-                    "buildings4.ans": {
-                        type: "output",
-                        path: "/buildings/buildings4.ans",
-                        content: "0"
-                    },
-                    "buildings5.in": {
-                        type: "input",
-                        path: "/buildings/buildings5.in",
-                        content: "7\n10 20 30 40 50 60 70"
-                    },
-                    "buildings5.ans": {
-                        type: "output",
-                        path: "/buildings/buildings5.ans",
-                        content: "10"
-                    },
-                    "buildings6.in": {
-                        type: "input",
-                        path: "/buildings/buildings6.in",
-                        content: "8\n1000000000 500000000 750000000 250000000 1000000000 1000000000 1000000000 1000000000"
-                    },
-                    "buildings6.ans": {
-                        type: "output",
-                        path: "/buildings/buildings6.ans",
-                        content: "0"
-                    }
-                }
-            },
-            "string/": {
-                type: "folder",
-                children: {
-                    "string1.in": {
-                        type: "input",
-                        path: "/string/string1.in",
-                        content: "0\n3\nabACa\n10\nAbaka\n10\naBBsbA\n10"
-                    },
-                    "string1.ans": {
-                        type: "output",
-                        path: "/string/string1.ans",
-                        content: "6\n0\n1"
-                    },
-                    "string2.in": {
-                        type: "input",
-                        path: "/string/string2.in",
-                        content: "0\n2\nABCD\n100\nXYZ\n100"
-                    },
-                    "string2.ans": {
-                        type: "output",
-                        path: "/string/string2.ans",
-                        content: "0\n0"
-                    },
-                    "string3.in": {
-                        type: "input",
-                        path: "/string/string3.in",
-                        content: "0\n2\nabcba\n1000\nabcdcba\n1000"
-                    },
-                    "string3.ans": {
-                        type: "output",
-                        path: "/string/string3.ans",
-                        content: "1\n1"
-                    }
-                }
-            },
-            "knockout/": {
-                type: "folder",
-                children: {
-                    "knockout1.in": {
-                        type: "input",
-                        path: "/knockout/knockout1.in",
-                        content: "2\n2 4 1 5"
-                    },
-                    "knockout1.ans": {
-                        type: "output",
-                        path: "/knockout/knockout1.ans",
-                        content: "1 3\n2"
-                    },
-                    "knockout2.in": {
-                        type: "input",
-                        path: "/knockout/knockout2.in",
-                        content: "1\n3 5"
-                    },
-                    "knockout2.ans": {
-                        type: "output",
-                        path: "/knockout/knockout2.ans",
-                        content: "2"
-                    },
-                    "knockout3.in": {
-                        type: "input",
-                        path: "/knockout/knockout3.in",
-                        content: "3\n1 2 3 4 5 6 7 8"
-                    },
-                    "knockout3.ans": {
-                        type: "output",
-                        path: "/knockout/knockout3.ans",
-                        content: "2 4 6 8\n3 7\n5"
-                    },
-                    "knockout4.in": {
-                        type: "input",
-                        path: "/knockout/knockout4.in",
-                        content: "2\n5 3 4 2"
-                    },
-                    "knockout4.ans": {
-                        type: "output",
-                        path: "/knockout/knockout4.ans",
-                        content: "2 4\n3"
-                    }
+                } catch (e) {
+                    console.warn('無法解析GitHub Pages URL:', e);
                 }
             }
+            
+            // 如果無法自動檢測，返回null
+            return null;
+        }
+        
+        const gitHubInfo = detectGitHubInfo();
+        
+        // ============================================
+        // 檔案配置 - 修正為 .ans 檔案
+        // ============================================
+        
+        const FILE_CONFIG = {
+            pdf: '2025年度_算法入門C++_第一次測驗.pdf',
+            
+            // 旅行計劃 (trip)
+            trip: [
+                'trip1.in', 'trip1.ans',
+                'trip2.in', 'trip2.ans', 
+                'trip3.in', 'trip3.ans',
+                'trip4.in', 'trip4.ans'
+            ],
+            
+            // 高樓 (buildings)
+            buildings: [
+                'buildings1.in', 'buildings1.ans',
+                'buildings2.in', 'buildings2.ans',
+                'buildings3.in', 'buildings3.ans',
+                'buildings4.in', 'buildings4.ans',
+                'buildings5.in', 'buildings5.ans',
+                'buildings6.in', 'buildings6.ans'
+            ],
+            
+            // 回文字串 (string)
+            string: [
+                'string1.in', 'string1.ans',
+                'string2.in', 'string2.ans',
+                'string3.in', 'string3.ans'
+            ],
+            
+            // 淘汰賽 (knockout)
+            knockout: [
+                'knockout1.in', 'knockout1.ans',
+                'knockout2.in', 'knockout2.ans',
+                'knockout3.in', 'knockout3.ans',
+                'knockout4.in', 'knockout4.ans'
+            ]
         };
 
         // DOM元素
         const fileTree = document.querySelector('.file-tree');
         const fileTitle = document.getElementById('file-title');
         const filePath = document.getElementById('file-path');
-        const filePreview = document.getElementById('file-preview');
-        const pdfViewerContainer = document.getElementById('pdf-viewer-container');
-        const pdfViewer = document.getElementById('pdf-viewer');
+        const fileMeta = document.getElementById('file-meta');
+        const actionButtons = document.getElementById('action-buttons');
+        const toggleBtn = document.getElementById('toggle-btn');
         const copyAllBtn = document.getElementById('copy-all-btn');
+        const filePreviewContainer = document.getElementById('file-preview-container');
+        const filePreview = document.getElementById('file-preview');
+        const previewStats = document.getElementById('preview-stats');
         const sampleInfo = document.getElementById('sample-info');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const noFileSelected = document.getElementById('no-file-selected');
         const notification = document.getElementById('notification');
         const notificationText = document.getElementById('notification-text');
 
-        // 當前選中的檔案
+        // 狀態變數
         let currentFile = null;
+        let isCollapsed = false;
+        let fileContent = '';
+
+        // 構建GitHub RAW URL
+        function buildGitHubUrl(filename) {
+            // 如果有自動檢測到的GitHub資訊，使用它
+            if (gitHubInfo) {
+                return `https://raw.githubusercontent.com/${gitHubInfo.username}/${gitHubInfo.repo}/${gitHubInfo.branch}/${filename}`;
+            }
+            
+            // 否則嘗試使用當前頁面路徑
+            try {
+                const baseUrl = window.location.origin + window.location.pathname;
+                const urlParts = baseUrl.split('/');
+                
+                // 尋找github.io部分
+                const githubIndex = urlParts.findIndex(part => part.includes('github.io'));
+                if (githubIndex !== -1 && urlParts.length > githubIndex + 2) {
+                    const username = urlParts[githubIndex + 1];
+                    const repo = urlParts[githubIndex + 2];
+                    return `https://raw.githubusercontent.com/${username}/${repo}/main/${filename}`;
+                }
+            } catch (e) {
+                console.warn('無法構建GitHub RAW URL:', e);
+            }
+            
+            // 最後嘗試：如果是本地開發，使用相對路徑
+            return filename;
+        }
 
         // 初始化檔案樹
         function initFileTree() {
             fileTree.innerHTML = '';
             
-            // 添加PDF檔案
-            addFileItem(PDF_FILENAME, "pdf", "/");
+            // 添加PDF檔案作為超連結
+            addPdfLinkItem(FILE_CONFIG.pdf);
             
             // 添加資料夾
-            Object.keys(fileSystem).forEach(key => {
-                if (key.endsWith('/')) {
-                    addFolderItem(key, fileSystem[key]);
-                }
-            });
+            addFolderItem('trip/', '旅行計劃', FILE_CONFIG.trip);
+            addFolderItem('buildings/', '高樓', FILE_CONFIG.buildings);
+            addFolderItem('string/', '回文字串', FILE_CONFIG.string);
+            addFolderItem('knockout/', '淘汰賽', FILE_CONFIG.knockout);
+            
+            // 顯示自動檢測結果
+            if (gitHubInfo) {
+                console.log('自動檢測到GitHub資訊:', gitHubInfo);
+            }
+        }
+
+        // 添加PDF超連結項目
+        function addPdfLinkItem(pdfName) {
+            const li = document.createElement('li');
+            li.className = 'pdf-link-item';
+            
+            const pdfUrl = buildGitHubUrl(pdfName);
+            
+            li.innerHTML = `
+                <a href="${pdfUrl}" class="pdf-link" target="_blank" onclick="event.stopPropagation();">
+                    <div class="file-icon">
+                        <i class="fas fa-file-pdf pdf-file"></i>
+                    </div>
+                    <div class="file-name pdf-file">${pdfName} <span style="font-size: 0.8em; color: #666;">(新視窗開啟)</span></div>
+                </a>
+            `;
+            
+            fileTree.appendChild(li);
         }
 
         // 添加檔案項目
@@ -557,19 +641,19 @@
             const li = document.createElement('li');
             li.className = 'file-item';
             li.setAttribute('data-path', path);
+            li.setAttribute('data-type', type);
             
             let icon = 'fa-file';
             let className = '';
             
-            if (type === 'pdf') {
-                icon = 'fa-file-pdf';
-                className = 'pdf-file';
-            } else if (type === 'input') {
+            if (name.endsWith('.in')) {
                 icon = 'fa-file-import';
                 className = 'input-file';
-            } else if (type === 'output') {
+                type = 'input';
+            } else if (name.endsWith('.ans')) {
                 icon = 'fa-file-export';
                 className = 'output-file';
+                type = 'output';
             }
             
             li.innerHTML = `
@@ -579,32 +663,31 @@
                 <div class="file-name ${className}">${name}</div>
             `;
             
-            li.addEventListener('click', () => selectFile(path));
+            li.addEventListener('click', () => selectFile(path, type, name));
             fileTree.appendChild(li);
         }
 
         // 添加資料夾項目
-        function addFolderItem(name, folderData) {
+        function addFolderItem(folderName, displayName, files) {
             const li = document.createElement('li');
             li.className = 'file-item directory';
             li.innerHTML = `
                 <div class="file-icon">
                     <i class="fas fa-folder"></i>
                 </div>
-                <div class="file-name">${name}</div>
+                <div class="file-name">${folderName} <span style="color: #666; font-size: 0.9em;">(${displayName})</span></div>
             `;
             
-            // 點擊資料夾展開/收合
             li.addEventListener('click', (e) => {
                 e.stopPropagation();
-                toggleFolder(li, name, folderData);
+                toggleFolder(li, folderName, files);
             });
             
             fileTree.appendChild(li);
         }
 
         // 切換資料夾展開/收合
-        function toggleFolder(folderElement, folderName, folderData) {
+        function toggleFolder(folderElement, folderName, files) {
             const isExpanded = folderElement.classList.contains('expanded');
             
             document.querySelectorAll('.file-item.expanded').forEach(item => {
@@ -630,19 +713,25 @@
                 childrenContainer.className = 'folder-children';
                 childrenContainer.style.paddingLeft = '20px';
                 
-                Object.keys(folderData.children).forEach(childName => {
-                    const childData = folderData.children[childName];
+                files.forEach(fileName => {
+                    const type = fileName.endsWith('.in') ? 'input' : 'output';
+                    addFileItem(fileName, type, fileName);
+                });
+                
+                // 將子項目直接添加到容器中
+                files.forEach(fileName => {
                     const childItem = document.createElement('div');
                     childItem.className = 'file-item';
-                    childItem.setAttribute('data-path', childData.path);
+                    childItem.setAttribute('data-path', fileName);
+                    childItem.setAttribute('data-type', fileName.endsWith('.in') ? 'input' : 'output');
                     
                     let icon = 'fa-file';
                     let className = '';
                     
-                    if (childData.type === 'input') {
+                    if (fileName.endsWith('.in')) {
                         icon = 'fa-file-import';
                         className = 'input-file';
-                    } else if (childData.type === 'output') {
+                    } else if (fileName.endsWith('.ans')) {
                         icon = 'fa-file-export';
                         className = 'output-file';
                     }
@@ -651,10 +740,10 @@
                         <div class="file-icon">
                             <i class="fas ${icon} ${className}"></i>
                         </div>
-                        <div class="file-name ${className}">${childName}</div>
+                        <div class="file-name ${className}">${fileName}</div>
                     `;
                     
-                    childItem.addEventListener('click', () => selectFile(childData.path));
+                    childItem.addEventListener('click', () => selectFile(fileName, fileName.endsWith('.in') ? 'input' : 'output', fileName));
                     childrenContainer.appendChild(childItem);
                 });
                 
@@ -663,7 +752,7 @@
         }
 
         // 選擇檔案
-        function selectFile(path) {
+        async function selectFile(path, type, displayName) {
             // 移除所有active狀態
             document.querySelectorAll('.file-item').forEach(item => {
                 item.classList.remove('active');
@@ -675,113 +764,221 @@
                 fileItem.classList.add('active');
             }
             
-            // 更新當前檔案
-            currentFile = getFileByPath(path);
+            // 重置預覽區域
+            resetPreview();
             
-            if (currentFile) {
-                const fileName = path.split('/').pop();
-                fileTitle.textContent = fileName;
-                filePath.textContent = path;
+            // 顯示載入中
+            showLoading();
+            
+            // 更新標題
+            fileTitle.textContent = displayName || path;
+            filePath.textContent = `檔案路徑: ${path}`;
+            fileMeta.textContent = `檔案類型: ${type === 'input' ? '輸入檔案 (.in)' : '輸出檔案 (.ans)'}`;
+            
+            // 載入檔案內容
+            await loadFileContent(path, type, displayName || path);
+        }
+
+        // 載入檔案內容
+        async function loadFileContent(filePath, type, displayName) {
+            try {
+                // 構建GitHub RAW URL
+                const fileUrl = buildGitHubUrl(filePath);
                 
-                // 如果是PDF檔案
-                if (currentFile.type === 'pdf') {
-                    // 隱藏文字預覽，顯示PDF檢視器
-                    filePreview.style.display = 'none';
-                    pdfViewerContainer.style.display = 'block';
-                    
-                    // 設定PDF來源
-                    pdfViewer.src = PDF_FILENAME + '?t=' + new Date().getTime();
-                    
-                    sampleInfo.style.display = 'none';
-                    copyAllBtn.style.display = 'none';
-                } else {
-                    // 隱藏PDF檢視器，顯示文字預覽
-                    filePreview.style.display = 'block';
-                    pdfViewerContainer.style.display = 'none';
-                    
-                    filePreview.textContent = currentFile.content;
-                    
-                    if (currentFile.type === 'input' || currentFile.type === 'output') {
-                        sampleInfo.style.display = 'block';
-                    } else {
-                        sampleInfo.style.display = 'none';
-                    }
-                    
-                    copyAllBtn.style.display = 'flex';
+                // 使用Fetch API讀取檔案
+                const response = await fetch(fileUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`無法讀取檔案 (HTTP ${response.status})`);
                 }
+                
+                // 讀取檔案內容
+                fileContent = await response.text();
+                
+                // 獲取檔案大小
+                const fileSize = response.headers.get('content-length') || fileContent.length;
+                
+                // 顯示檔案內容
+                displayFileContent(fileContent, fileSize, type, displayName);
+                
+                // 顯示操作按鈕
+                actionButtons.style.display = 'flex';
+                
+                // 如果是測試資料，顯示提示
+                sampleInfo.style.display = 'block';
+                
+            } catch (err) {
+                showError(`無法載入檔案 "${displayName}"。錯誤: ${err.message}`);
+                console.error('檔案載入錯誤:', err);
+                
+                // 嘗試替代方案：直接使用檔案名稱
+                console.log('嘗試使用檔案名稱作為直接路徑...');
+                filePath = filePath; // 保持原樣
+            } finally {
+                hideLoading();
             }
         }
 
-        // 根據路徑獲取檔案
-        function getFileByPath(path) {
-            if (path === "/" + PDF_FILENAME) {
-                return fileSystem[PDF_FILENAME];
+        // 顯示載入中
+        function showLoading() {
+            loading.style.display = 'flex';
+            error.style.display = 'none';
+            filePreviewContainer.style.display = 'none';
+            actionButtons.style.display = 'none';
+            sampleInfo.style.display = 'none';
+            noFileSelected.style.display = 'none';
+        }
+
+        // 隱藏載入中
+        function hideLoading() {
+            loading.style.display = 'none';
+        }
+
+        // 顯示檔案內容
+        function displayFileContent(content, fileSize, type, filename) {
+            // 計算檔案資訊
+            const lines = content.split('\n').length;
+            const chars = content.length;
+            const sizeKB = Math.round(fileSize / 1024 * 100) / 100;
+            
+            // 顯示預覽容器
+            filePreviewContainer.style.display = 'flex';
+            
+            // 更新統計資訊
+            previewStats.textContent = `${lines} 行 | ${chars.toLocaleString()} 字元 | ${sizeKB} KB`;
+            
+            // 顯示檔案內容
+            filePreview.textContent = content;
+            
+            // 重置折疊狀態
+            isCollapsed = false;
+            updateToggleButton(content, lines, chars);
+            
+            // 如果檔案超過30行或5000字元，自動折疊
+            if (lines > 30 || chars > 5000) {
+                togglePreview();
             }
+        }
+
+        // 切換預覽折疊/展開
+        function togglePreview() {
+            isCollapsed = !isCollapsed;
             
-            const parts = path.split('/').filter(part => part);
-            
-            if (parts.length >= 2) {
-                const folderName = parts[0] + '/';
-                const fileName = parts[1];
-                
-                if (fileSystem[folderName] && fileSystem[folderName].children[fileName]) {
-                    return fileSystem[folderName].children[fileName];
-                }
+            if (isCollapsed) {
+                filePreview.classList.add('collapsed');
+                toggleBtn.innerHTML = '<i class="fas fa-expand"></i> 顯示更多';
+            } else {
+                filePreview.classList.remove('collapsed');
+                toggleBtn.innerHTML = '<i class="fas fa-compress"></i> 顯示更少';
             }
+        }
+
+        // 更新切換按鈕
+        function updateToggleButton(content, lines, chars) {
+            // 如果檔案超過30行或5000字元，顯示切換按鈕
+            if (lines > 30 || chars > 5000) {
+                toggleBtn.style.display = 'flex';
+                toggleBtn.innerHTML = isCollapsed ? 
+                    '<i class="fas fa-expand"></i> 顯示更多' : 
+                    '<i class="fas fa-compress"></i> 顯示更少';
+            } else {
+                toggleBtn.style.display = 'none';
+            }
+        }
+
+        // 顯示錯誤訊息
+        function showError(message) {
+            error.style.display = 'block';
+            error.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <i class="fas fa-exclamation-triangle"></i> ${message}
+                </div>
+                <div style="font-size: 0.9rem; color: #666; text-align: left;">
+                    <strong>建議解決方案：</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>確認檔案已上傳到GitHub儲存庫</li>
+                        <li>檢查檔案名稱是否正確: ${fileTitle.textContent}</li>
+                        <li>確認GitHub Pages已啟用</li>
+                        <li>嘗試直接訪問: <a href="${buildGitHubUrl(fileTitle.textContent)}" target="_blank">${buildGitHubUrl(fileTitle.textContent)}</a></li>
+                    </ul>
+                </div>
+            `;
             
-            return null;
+            filePreviewContainer.style.display = 'none';
+            actionButtons.style.display = 'none';
+            sampleInfo.style.display = 'none';
+        }
+
+        // 重置預覽區域
+        function resetPreview() {
+            filePreview.textContent = '';
+            previewStats.textContent = '';
+            filePreview.classList.remove('collapsed');
+            isCollapsed = false;
+            noFileSelected.style.display = 'none';
         }
 
         // 複製全部內容
-        copyAllBtn.addEventListener('click', () => {
-            if (currentFile && currentFile.content) {
-                copyToClipboard(currentFile.content);
-                
-                notificationText.textContent = '已複製到剪貼簿';
-                notification.classList.add('show');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 2500);
+        copyAllBtn.addEventListener('click', async () => {
+            if (fileContent) {
+                try {
+                    await navigator.clipboard.writeText(fileContent);
+                    
+                    notificationText.textContent = '已複製全部內容到剪貼簿';
+                    notification.classList.add('show');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 2500);
+                } catch (err) {
+                    // 如果clipboard API失敗，使用傳統方法
+                    const textarea = document.createElement('textarea');
+                    textarea.value = fileContent;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    notificationText.textContent = '已複製到剪貼簿';
+                    notification.classList.add('show');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 2500);
+                }
             }
         });
 
-        // 複製到剪貼簿函數
-        function copyToClipboard(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-        }
-
-        // 檢查PDF檔案是否存在
-        function checkPdfExists() {
-            const img = new Image();
-            img.onload = function() {
-                console.log('PDF檔案存在');
-            };
-            img.onerror = function() {
-                console.error('PDF檔案不存在或路徑錯誤');
-                notificationText.textContent = 'PDF檔案不存在，請檢查檔案名稱和路徑';
-                notification.classList.add('show');
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
-            };
-            img.src = PDF_FILENAME;
-        }
+        // 切換按鈕事件
+        toggleBtn.addEventListener('click', togglePreview);
 
         // 初始化
-        initFileTree();
-        checkPdfExists();
-
-        // 提示使用者
-        setTimeout(() => {
-            console.log('PDF檔案名稱：', PDF_FILENAME);
-            console.log('確保PDF檔案與HTML檔案在同一目錄下');
-        }, 1000);
+        document.addEventListener('DOMContentLoaded', function() {
+            initFileTree();
+            
+            // 顯示使用說明
+            console.log('=== OI賽制看題系統 ===');
+            console.log('1. PDF檔案會在新視窗開啟');
+            console.log('2. 超過30行或5000字元的檔案會自動折疊');
+            console.log('3. 可以複製整個檔案內容');
+            console.log('4. 自動檢測GitHub資訊:', gitHubInfo);
+            
+            if (!gitHubInfo) {
+                console.warn('無法自動檢測GitHub資訊，可能需要手動配置');
+                error.innerHTML = `
+                    <div style="color: #f39c12;">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        無法自動檢測GitHub儲存庫資訊。請確保：
+                        <ul style="margin-top: 10px; text-align: left;">
+                            <li>HTML檔案在GitHub Pages上運行</li>
+                            <li>URL格式為: https://使用者名稱.github.io/儲存庫名稱/</li>
+                            <li>所有測試檔案(.in, .ans)和PDF已上傳到儲存庫</li>
+                        </ul>
+                    </div>
+                `;
+                error.style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
