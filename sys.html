@@ -161,6 +161,22 @@
             line-height: 1.5;
         }
         
+        .pdf-viewer-container {
+            flex: 1;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #eaeaea;
+            overflow: hidden;
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 4px;
+        }
+        
         .sample-info {
             margin-top: 20px;
             padding: 15px;
@@ -270,13 +286,17 @@
                         <h2 class="file-title" id="file-title">選擇檔案</h2>
                         <div class="file-path" id="file-path"></div>
                     </div>
-                    <button class="copy-all-btn" id="copy-all-btn">
+                    <button class="copy-all-btn" id="copy-all-btn" style="display: none;">
                         <i class="fas fa-copy"></i> 複製全部內容
                     </button>
                 </div>
                 
                 <div class="file-preview" id="file-preview">
                     請從左側選擇一個檔案以查看內容
+                </div>
+                
+                <div class="pdf-viewer-container" id="pdf-viewer-container" style="display: none;">
+                    <iframe class="pdf-viewer" id="pdf-viewer" src=""></iframe>
                 </div>
                 
                 <div class="sample-info" id="sample-info" style="display: none;">
@@ -296,11 +316,18 @@
     </div>
 
     <script>
-        // 檔案系統結構 - 根據PDF內容
+        // 重要：請檢查PDF檔案的確切名稱
+        // 常見問題：檔案名可能是以下之一：
+        // 1. 2025年度_算法入門C++_第一次測驗.pdf
+        // 2. 2025年度_算法入門C++_第一次測驗.PDF
+        // 3. 2025年度_算法入门C++_第一次测验.pdf
+        const PDF_FILENAME = '2025年度_算法入門C++_第一次測驗.pdf';
+        
+        // 檔案系統結構
         const fileSystem = {
-            "2025年度_算法入門C++_第一次測驗.pdf": {
+            [PDF_FILENAME]: {
                 type: "pdf",
-                path: "/2025年度_算法入門C++_第一次測驗.pdf",
+                path: "/" + PDF_FILENAME,
                 content: "PDF檔案 - 包含所有題目描述、輸入輸出格式、數據範圍和子任務詳情"
             },
             "trip/": {
@@ -500,6 +527,8 @@
         const fileTitle = document.getElementById('file-title');
         const filePath = document.getElementById('file-path');
         const filePreview = document.getElementById('file-preview');
+        const pdfViewerContainer = document.getElementById('pdf-viewer-container');
+        const pdfViewer = document.getElementById('pdf-viewer');
         const copyAllBtn = document.getElementById('copy-all-btn');
         const sampleInfo = document.getElementById('sample-info');
         const notification = document.getElementById('notification');
@@ -513,7 +542,7 @@
             fileTree.innerHTML = '';
             
             // 添加PDF檔案
-            addFileItem("2025年度_算法入門C++_第一次測驗.pdf", "pdf", "/");
+            addFileItem(PDF_FILENAME, "pdf", "/");
             
             // 添加資料夾
             Object.keys(fileSystem).forEach(key => {
@@ -576,14 +605,11 @@
 
         // 切換資料夾展開/收合
         function toggleFolder(folderElement, folderName, folderData) {
-            // 檢查是否已經展開
             const isExpanded = folderElement.classList.contains('expanded');
             
-            // 移除所有展開狀態
             document.querySelectorAll('.file-item.expanded').forEach(item => {
                 if (item !== folderElement) {
                     item.classList.remove('expanded');
-                    // 移除子項目
                     const nextSibling = item.nextElementSibling;
                     if (nextSibling && nextSibling.classList.contains('folder-children')) {
                         nextSibling.remove();
@@ -592,22 +618,18 @@
             });
             
             if (isExpanded) {
-                // 收合
                 folderElement.classList.remove('expanded');
                 const childrenContainer = folderElement.nextElementSibling;
                 if (childrenContainer && childrenContainer.classList.contains('folder-children')) {
                     childrenContainer.remove();
                 }
             } else {
-                // 展開
                 folderElement.classList.add('expanded');
                 
-                // 創建子項目容器
                 const childrenContainer = document.createElement('div');
                 childrenContainer.className = 'folder-children';
                 childrenContainer.style.paddingLeft = '20px';
                 
-                // 添加子項目
                 Object.keys(folderData.children).forEach(childName => {
                     const childData = folderData.children[childName];
                     const childItem = document.createElement('div');
@@ -636,7 +658,6 @@
                     childrenContainer.appendChild(childItem);
                 });
                 
-                // 插入到DOM中
                 folderElement.parentNode.insertBefore(childrenContainer, folderElement.nextSibling);
             }
         }
@@ -658,33 +679,45 @@
             currentFile = getFileByPath(path);
             
             if (currentFile) {
-                // 更新標題和路徑
                 const fileName = path.split('/').pop();
                 fileTitle.textContent = fileName;
                 filePath.textContent = path;
                 
-                // 更新預覽內容
-                filePreview.textContent = currentFile.content;
-                
-                // 顯示樣例提示（如果是測試資料）
-                if (currentFile.type === 'input' || currentFile.type === 'output') {
-                    sampleInfo.style.display = 'block';
-                } else {
+                // 如果是PDF檔案
+                if (currentFile.type === 'pdf') {
+                    // 隱藏文字預覽，顯示PDF檢視器
+                    filePreview.style.display = 'none';
+                    pdfViewerContainer.style.display = 'block';
+                    
+                    // 設定PDF來源
+                    pdfViewer.src = PDF_FILENAME + '?t=' + new Date().getTime();
+                    
                     sampleInfo.style.display = 'none';
+                    copyAllBtn.style.display = 'none';
+                } else {
+                    // 隱藏PDF檢視器，顯示文字預覽
+                    filePreview.style.display = 'block';
+                    pdfViewerContainer.style.display = 'none';
+                    
+                    filePreview.textContent = currentFile.content;
+                    
+                    if (currentFile.type === 'input' || currentFile.type === 'output') {
+                        sampleInfo.style.display = 'block';
+                    } else {
+                        sampleInfo.style.display = 'none';
+                    }
+                    
+                    copyAllBtn.style.display = 'flex';
                 }
-                
-                // 顯示複製按鈕
-                copyAllBtn.style.display = 'flex';
             }
         }
 
         // 根據路徑獲取檔案
         function getFileByPath(path) {
-            if (path === "/2025年度_算法入門C++_第一次測驗.pdf") {
-                return fileSystem["2025年度_算法入門C++_第一次測驗.pdf"];
+            if (path === "/" + PDF_FILENAME) {
+                return fileSystem[PDF_FILENAME];
             }
             
-            // 解析路徑
             const parts = path.split('/').filter(part => part);
             
             if (parts.length >= 2) {
@@ -723,22 +756,32 @@
             document.body.removeChild(textarea);
         }
 
+        // 檢查PDF檔案是否存在
+        function checkPdfExists() {
+            const img = new Image();
+            img.onload = function() {
+                console.log('PDF檔案存在');
+            };
+            img.onerror = function() {
+                console.error('PDF檔案不存在或路徑錯誤');
+                notificationText.textContent = 'PDF檔案不存在，請檢查檔案名稱和路徑';
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            };
+            img.src = PDF_FILENAME;
+        }
+
         // 初始化
         initFileTree();
+        checkPdfExists();
 
-        // 點擊PDF檔案時開啟PDF
-        document.querySelector('[data-path="/2025年度_算法入門C++_第一次測驗.pdf"]').addEventListener('click', () => {
-            // 這裡可以替換為實際的PDF檔案路徑
-            const pdfPath = '2025年度_算法入門C++_第一次測驗.pdf';
-            window.open(pdfPath, '_blank');
-            
-            notificationText.textContent = '正在開啟PDF檔案...';
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 1500);
-        });
+        // 提示使用者
+        setTimeout(() => {
+            console.log('PDF檔案名稱：', PDF_FILENAME);
+            console.log('確保PDF檔案與HTML檔案在同一目錄下');
+        }, 1000);
     </script>
 </body>
 </html>
