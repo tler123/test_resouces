@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年度 算法入門C++ 第一次測驗</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5aa0 100%);
+            color: white;
+            padding: 25px 30px;
+            border-bottom: 4px solid #ffc107;
+        }
+        
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h1 i {
+            margin-right: 15px;
+            color: #ffc107;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .file-explorer {
+            flex: 0 0 280px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #eaeaea;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        .file-tree {
+            list-style: none;
+        }
+        
+        .file-item {
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+        
+        .file-item:hover {
+            background-color: #eef2ff;
+        }
+        
+        .file-item.active {
+            background-color: #e8edff;
+            border-left-color: #1a3a8f;
+            font-weight: 600;
+        }
+        
+        .file-icon {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .file-name {
+            font-size: 1rem;
+        }
+        
+        .file-content {
+            flex: 1;
+            padding: 30px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .file-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .file-title {
+            font-size: 1.8rem;
+            color: #1a3a8f;
+        }
+        
+        .file-path {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .copy-all-btn {
+            background-color: #2c5aa0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-all-btn:hover {
+            background-color: #1a3a8f;
+        }
+        
+        .copy-all-btn i {
+            margin-right: 8px;
+        }
+        
+        .file-preview {
+            flex: 1;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #eaeaea;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .sample-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eef7ff;
+            border-radius: 6px;
+            border-left: 4px solid #2c5aa0;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            background-color: #f8f9fa;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            display: flex;
+            animation: fadeInOut 2.5s ease;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .directory {
+            font-weight: 600;
+            color: #1a3a8f;
+        }
+        
+        .input-file {
+            color: #d35400;
+        }
+        
+        .output-file {
+            color: #27ae60;
+        }
+        
+        .pdf-file {
+            color: #e74c3c;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .file-explorer {
+                flex: none;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eaeaea;
+                max-height: 300px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .file-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-folder-open"></i> 2025年度 算法入門C++ 第一次測驗</h1>
+            <p class="subtitle">瀏覽題目資料夾和樣例檔案 | 點擊左側檔案查看內容</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="file-explorer">
+                <ul class="file-tree">
+                    <!-- 檔案列表將由JavaScript動態生成 -->
+                </ul>
+            </div>
+            
+            <div class="file-content">
+                <div class="file-header">
+                    <div>
+                        <h2 class="file-title" id="file-title">選擇檔案</h2>
+                        <div class="file-path" id="file-path"></div>
+                    </div>
+                    <button class="copy-all-btn" id="copy-all-btn">
+                        <i class="fas fa-copy"></i> 複製全部內容
+                    </button>
+                </div>
+                
+                <div class="file-preview" id="file-preview">
+                    請從左側選擇一個檔案以查看內容
+                </div>
+                
+                <div class="sample-info" id="sample-info" style="display: none;">
+                    <strong>提示：</strong> 此檔案為樣例測試資料，您可以複製內容到您的程式進行測試。
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>2025年度 算法入門C++ 第一次測驗 &copy; 時間：2025年11月21日 17:00 ~ 19:30</p>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">已複製到剪貼簿</span>
+    </div>
+
+    <script>
+        // 檔案系統結構 - 根據PDF內容
+        const fileSystem = {
+            "2025年度_算法入門C++_第一次測驗.pdf": {
+                type: "pdf",
+                path: "/2025年度_算法入門C++_第一次測驗.pdf",
+                content: "PDF檔案 - 包含所有題目描述、輸入輸出格式、數據範圍和子任務詳情"
+            },
+            "trip/": {
+                type: "folder",
+                children: {
+                    "trip1.in": {
+                        type: "input",
+                        path: "/trip/trip1.in",
+                        content: "5\n2 4 3 1 2"
+                    },
+                    "trip1.ans": {
+                        type: "output",
+                        path: "/trip/trip1.ans",
+                        content: "NO"
+                    },
+                    "trip2.in": {
+                        type: "input",
+                        path: "/trip/trip2.in",
+                        content: "5\n2 5 6 7 1"
+                    },
+                    "trip2.ans": {
+                        type: "output",
+                        path: "/trip/trip2.ans",
+                        content: "YES"
+                    },
+                    "trip3.in": {
+                        type: "input",
+                        path: "/trip/trip3.in",
+                        content: "3\n1 2 3"
+                    },
+                    "trip3.ans": {
+                        type: "output",
+                        path: "/trip/trip3.ans",
+                        content: "NO"
+                    },
+                    "trip4.in": {
+                        type: "input",
+                        path: "/trip/trip4.in",
+                        content: "4\n5 5 5 5"
+                    },
+                    "trip4.ans": {
+                        type: "output",
+                        path: "/trip/trip4.ans",
+                        content: "YES"
+                    }
+                }
+            },
+            "buildings/": {
+                type: "folder",
+                children: {
+                    "buildings1.in": {
+                        type: "input",
+                        path: "/buildings/buildings1.in",
+                        content: "5\n7 4 8 8 3"
+                    },
+                    "buildings1.ans": {
+                        type: "output",
+                        path: "/buildings/buildings1.ans",
+                        content: "1"
+                    },
+                    "buildings2.in": {
+                        type: "input",
+                        path: "/buildings/buildings2.in",
+                        content: "3\n5 5 5"
+                    },
+                    "buildings2.ans": {
+                        type: "output",
+                        path: "/buildings/buildings2.ans",
+                        content: "0"
+                    },
+                    "buildings3.in": {
+                        type: "input",
+                        path: "/buildings/buildings3.in",
+                        content: "4\n1 2 3 4"
+                    },
+                    "buildings3.ans": {
+                        type: "output",
+                        path: "/buildings/buildings3.ans",
+                        content: "1"
+                    },
+                    "buildings4.in": {
+                        type: "input",
+                        path: "/buildings/buildings4.in",
+                        content: "6\n100 200 150 300 250 300"
+                    },
+                    "buildings4.ans": {
+                        type: "output",
+                        path: "/buildings/buildings4.ans",
+                        content: "0"
+                    },
+                    "buildings5.in": {
+                        type: "input",
+                        path: "/buildings/buildings5.in",
+                        content: "7\n10 20 30 40 50 60 70"
+                    },
+                    "buildings5.ans": {
+                        type: "output",
+                        path: "/buildings/buildings5.ans",
+                        content: "10"
+                    },
+                    "buildings6.in": {
+                        type: "input",
+                        path: "/buildings/buildings6.in",
+                        content: "8\n1000000000 500000000 750000000 250000000 1000000000 1000000000 1000000000 1000000000"
+                    },
+                    "buildings6.ans": {
+                        type: "output",
+                        path: "/buildings/buildings6.ans",
+                        content: "0"
+                    }
+                }
+            },
+            "string/": {
+                type: "folder",
+                children: {
+                    "string1.in": {
+                        type: "input",
+                        path: "/string/string1.in",
+                        content: "0\n3\nabACa\n10\nAbaka\n10\naBBsbA\n10"
+                    },
+                    "string1.ans": {
+                        type: "output",
+                        path: "/string/string1.ans",
+                        content: "6\n0\n1"
+                    },
+                    "string2.in": {
+                        type: "input",
+                        path: "/string/string2.in",
+                        content: "0\n2\nABCD\n100\nXYZ\n100"
+                    },
+                    "string2.ans": {
+                        type: "output",
+                        path: "/string/string2.ans",
+                        content: "0\n0"
+                    },
+                    "string3.in": {
+                        type: "input",
+                        path: "/string/string3.in",
+                        content: "0\n2\nabcba\n1000\nabcdcba\n1000"
+                    },
+                    "string3.ans": {
+                        type: "output",
+                        path: "/string/string3.ans",
+                        content: "1\n1"
+                    }
+                }
+            },
+            "knockout/": {
+                type: "folder",
+                children: {
+                    "knockout1.in": {
+                        type: "input",
+                        path: "/knockout/knockout1.in",
+                        content: "2\n2 4 1 5"
+                    },
+                    "knockout1.ans": {
+                        type: "output",
+                        path: "/knockout/knockout1.ans",
+                        content: "1 3\n2"
+                    },
+                    "knockout2.in": {
+                        type: "input",
+                        path: "/knockout/knockout2.in",
+                        content: "1\n3 5"
+                    },
+                    "knockout2.ans": {
+                        type: "output",
+                        path: "/knockout/knockout2.ans",
+                        content: "2"
+                    },
+                    "knockout3.in": {
+                        type: "input",
+                        path: "/knockout/knockout3.in",
+                        content: "3\n1 2 3 4 5 6 7 8"
+                    },
+                    "knockout3.ans": {
+                        type: "output",
+                        path: "/knockout/knockout3.ans",
+                        content: "2 4 6 8\n3 7\n5"
+                    },
+                    "knockout4.in": {
+                        type: "input",
+                        path: "/knockout/knockout4.in",
+                        content: "2\n5 3 4 2"
+                    },
+                    "knockout4.ans": {
+                        type: "output",
+                        path: "/knockout/knockout4.ans",
+                        content: "2 4\n3"
+                    }
+                }
+            }
+        };
+
+        // DOM元素
+        const fileTree = document.querySelector('.file-tree');
+        const fileTitle = document.getElementById('file-title');
+        const filePath = document.getElementById('file-path');
+        const filePreview = document.getElementById('file-preview');
+        const copyAllBtn = document.getElementById('copy-all-btn');
+        const sampleInfo = document.getElementById('sample-info');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+
+        // 當前選中的檔案
+        let currentFile = null;
+
+        // 初始化檔案樹
+        function initFileTree() {
+            fileTree.innerHTML = '';
+            
+            // 添加PDF檔案
+            addFileItem("2025年度_算法入門C++_第一次測驗.pdf", "pdf", "/");
+            
+            // 添加資料夾
+            Object.keys(fileSystem).forEach(key => {
+                if (key.endsWith('/')) {
+                    addFolderItem(key, fileSystem[key]);
+                }
+            });
+        }
+
+        // 添加檔案項目
+        function addFileItem(name, type, path) {
+            const li = document.createElement('li');
+            li.className = 'file-item';
+            li.setAttribute('data-path', path);
+            
+            let icon = 'fa-file';
+            let className = '';
+            
+            if (type === 'pdf') {
+                icon = 'fa-file-pdf';
+                className = 'pdf-file';
+            } else if (type === 'input') {
+                icon = 'fa-file-import';
+                className = 'input-file';
+            } else if (type === 'output') {
+                icon = 'fa-file-export';
+                className = 'output-file';
+            }
+            
+            li.innerHTML = `
+                <div class="file-icon">
+                    <i class="fas ${icon} ${className}"></i>
+                </div>
+                <div class="file-name ${className}">${name}</div>
+            `;
+            
+            li.addEventListener('click', () => selectFile(path));
+            fileTree.appendChild(li);
+        }
+
+        // 添加資料夾項目
+        function addFolderItem(name, folderData) {
+            const li = document.createElement('li');
+            li.className = 'file-item directory';
+            li.innerHTML = `
+                <div class="file-icon">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <div class="file-name">${name}</div>
+            `;
+            
+            // 點擊資料夾展開/收合
+            li.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFolder(li, name, folderData);
+            });
+            
+            fileTree.appendChild(li);
+        }
+
+        // 切換資料夾展開/收合
+        function toggleFolder(folderElement, folderName, folderData) {
+            // 檢查是否已經展開
+            const isExpanded = folderElement.classList.contains('expanded');
+            
+            // 移除所有展開狀態
+            document.querySelectorAll('.file-item.expanded').forEach(item => {
+                if (item !== folderElement) {
+                    item.classList.remove('expanded');
+                    // 移除子項目
+                    const nextSibling = item.nextElementSibling;
+                    if (nextSibling && nextSibling.classList.contains('folder-children')) {
+                        nextSibling.remove();
+                    }
+                }
+            });
+            
+            if (isExpanded) {
+                // 收合
+                folderElement.classList.remove('expanded');
+                const childrenContainer = folderElement.nextElementSibling;
+                if (childrenContainer && childrenContainer.classList.contains('folder-children')) {
+                    childrenContainer.remove();
+                }
+            } else {
+                // 展開
+                folderElement.classList.add('expanded');
+                
+                // 創建子項目容器
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'folder-children';
+                childrenContainer.style.paddingLeft = '20px';
+                
+                // 添加子項目
+                Object.keys(folderData.children).forEach(childName => {
+                    const childData = folderData.children[childName];
+                    const childItem = document.createElement('div');
+                    childItem.className = 'file-item';
+                    childItem.setAttribute('data-path', childData.path);
+                    
+                    let icon = 'fa-file';
+                    let className = '';
+                    
+                    if (childData.type === 'input') {
+                        icon = 'fa-file-import';
+                        className = 'input-file';
+                    } else if (childData.type === 'output') {
+                        icon = 'fa-file-export';
+                        className = 'output-file';
+                    }
+                    
+                    childItem.innerHTML = `
+                        <div class="file-icon">
+                            <i class="fas ${icon} ${className}"></i>
+                        </div>
+                        <div class="file-name ${className}">${childName}</div>
+                    `;
+                    
+                    childItem.addEventListener('click', () => selectFile(childData.path));
+                    childrenContainer.appendChild(childItem);
+                });
+                
+                // 插入到DOM中
+                folderElement.parentNode.insertBefore(childrenContainer, folderElement.nextSibling);
+            }
+        }
+
+        // 選擇檔案
+        function selectFile(path) {
+            // 移除所有active狀態
+            document.querySelectorAll('.file-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 設置當前選中的檔案為active
+            const fileItem = document.querySelector(`[data-path="${path}"]`);
+            if (fileItem) {
+                fileItem.classList.add('active');
+            }
+            
+            // 更新當前檔案
+            currentFile = getFileByPath(path);
+            
+            if (currentFile) {
+                // 更新標題和路徑
+                const fileName = path.split('/').pop();
+                fileTitle.textContent = fileName;
+                filePath.textContent = path;
+                
+                // 更新預覽內容
+                filePreview.textContent = currentFile.content;
+                
+                // 顯示樣例提示（如果是測試資料）
+                if (currentFile.type === 'input' || currentFile.type === 'output') {
+                    sampleInfo.style.display = 'block';
+                } else {
+                    sampleInfo.style.display = 'none';
+                }
+                
+                // 顯示複製按鈕
+                copyAllBtn.style.display = 'flex';
+            }
+        }
+
+        // 根據路徑獲取檔案
+        function getFileByPath(path) {
+            if (path === "/2025年度_算法入門C++_第一次測驗.pdf") {
+                return fileSystem["2025年度_算法入門C++_第一次測驗.pdf"];
+            }
+            
+            // 解析路徑
+            const parts = path.split('/').filter(part => part);
+            
+            if (parts.length >= 2) {
+                const folderName = parts[0] + '/';
+                const fileName = parts[1];
+                
+                if (fileSystem[folderName] && fileSystem[folderName].children[fileName]) {
+                    return fileSystem[folderName].children[fileName];
+                }
+            }
+            
+            return null;
+        }
+
+        // 複製全部內容
+        copyAllBtn.addEventListener('click', () => {
+            if (currentFile && currentFile.content) {
+                copyToClipboard(currentFile.content);
+                
+                notificationText.textContent = '已複製到剪貼簿';
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2500);
+            }
+        });
+
+        // 複製到剪貼簿函數
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        // 初始化
+        initFileTree();
+
+        // 點擊PDF檔案時開啟PDF
+        document.querySelector('[data-path="/2025年度_算法入門C++_第一次測驗.pdf"]').addEventListener('click', () => {
+            // 這裡可以替換為實際的PDF檔案路徑
+            const pdfPath = '2025年度_算法入門C++_第一次測驗.pdf';
+            window.open(pdfPath, '_blank');
+            
+            notificationText.textContent = '正在開啟PDF檔案...';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
